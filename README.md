@@ -27,8 +27,9 @@
 | category_id                | integer   | null: false                    |
 | status_id                  | integer   | null: false                    |
 | shipping_fee_status_id     | integer   | null: false                    |
-| item_prefecture_id         | integer   | null: false                    |
+| prefecture_id              | integer   | null: false                    |
 | item_scheduled-delivery_id | integer   | null: false                    |
+| price                      | integer   | null: false                    |
 | user                       | reference | null: false, foreign_key: true |
 
 ### Association
@@ -50,11 +51,11 @@
 - belongs_to :item
 - has_one :shipping
 
-## shipping テーブル
+## shippings テーブル
 
 | Column         | Type       | Options                       |
 | -------------  | -------    | ----------------------------- |
-| postal_code_id | string     | null false                    |
+| postal_code    | string     | null false                    |
 | prefecture_id  | string     | null false                    |
 | city           | string     | null false                    |
 | address        | string     | null false                    |
