@@ -6,12 +6,6 @@ require 'rails_helper'
   end
 
   describe "ユーザー新規登録" do
-    # ----新規登録できるとき----
-    context 'nickname,email,password,password_confirmation,last_name,first_name,last_name_kana,first_name_kana,birth_dateが入力されていれば登録できる' do
-      it "nicknameが空だと登録できない" do
-        expect(@user).to be_valid
-      end
-    end
 
     # ----新規登録できないとき----
     context '新規登録できないとき' do
@@ -68,10 +62,16 @@ require 'rails_helper'
         expect(@user.errors.full_messages).to include("Password is too long (maximum is 128 characters)")
       end
 
-      it 'passwordが英数両方を含んでいなければ登録できない' do
+      it 'passwordに英字を含んでいなければ登録できない' do
+        @user.password = '111111'
+        @user.password_confirmation = '111111'
+        expect(@user.errors.full_messages).to include()
+      end
+
+      it 'passwordに数字を含んでいなければ登録できない' do
         @user.password = 'aaaaaa'
         @user.password_confirmation = 'aaaaaa'
-        @user.valid?
+        expect(@user.errors.full_messages).to include()
       end
 
       it "姓(全角)が空だと登録できない" do
@@ -107,21 +107,27 @@ require 'rails_helper'
       it "姓(全角)が全角でないと登録できない" do
         @user.last_name = 'ts'
         @user.valid?
+        expect(@user.errors.full_messages).to include("Last name Input full-width characters"
+        )
       end
 
       it "名(全角)が全角でないと登録できない" do
         @user.first_name = 'ts'
         @user.valid?
+        expect(@user.errors.full_messages).to include('First name Input full-width characters')
       end
 
       it "セイ(全角)が全角でないと登録できない" do
         @user.last_name_kana = 'ts'
         @user.valid?
+        expect(@user.errors.full_messages).to include("Last name kana Input full-width katakana characters")
+
       end
 
       it "メイ(全角)が全角でないと登録できない" do
         @user.first_name_kana = 'ts'
         @user.valid?
+        expect(@user.errors.full_messages).to include("First name kana Input full-width katakana characters")
       end
 
     end
