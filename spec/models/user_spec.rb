@@ -7,6 +7,15 @@ require 'rails_helper'
 
   describe "ユーザー新規登録" do
 
+    # ----新規登録できるとき----
+    context '新規登録できるとき' do
+      context 'nickname,email,password,password_confirmation,last_name,first_name,last_name_kana,first_name_kana,birth_dateが入力されていれば登録できる' do
+        it "nicknameが空だと登録できる" do
+          expect(@user).to be_valid
+        end 
+      end
+    end
+
     # ----新規登録できないとき----
     context '新規登録できないとき' do
       it "nicknameが空だと登録できない" do
@@ -26,7 +35,7 @@ require 'rails_helper'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
-
+  
       it 'passwordとpassword_confirmationが不一致では登録できない' do
         @user.password = '123456'
         @user.password_confirmation = '1234567'
@@ -48,11 +57,18 @@ require 'rails_helper'
         expect(@user.errors.full_messages).to include('Email is invalid')
       end
 
-      it 'passwordが5文字以下では登録できない' do
-        @user.password = '00000'
-        @user.password_confirmation = '00000'
+
+      it 'passwordが空では登録できない' do
+        @user.password = ''
         @user.valid?
-        expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
+        expect(@user.errors.full_messages).to include("Password can't be blank")
+      end
+
+      it '全角文字が含まれていると登録できない' do
+        @user.password = 'ａ１２３４５'
+        @user.password_confirmation = 'ａ１２３４５'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password Include both letters and numbers')
       end
 
       it 'passwordが129文字以上では登録できない' do
@@ -65,13 +81,15 @@ require 'rails_helper'
       it 'passwordに英字を含んでいなければ登録できない' do
         @user.password = '111111'
         @user.password_confirmation = '111111'
-        expect(@user.errors.full_messages).to include()
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Include both letters and numbers")
       end
 
       it 'passwordに数字を含んでいなければ登録できない' do
         @user.password = 'aaaaaa'
         @user.password_confirmation = 'aaaaaa'
-        expect(@user.errors.full_messages).to include()
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Include both letters and numbers")
       end
 
       it "姓(全角)が空だと登録できない" do
