@@ -8,9 +8,9 @@ require 'rails_helper'
   describe "ユーザー新規登録" do
 
     # ----新規登録できるとき----
-    context '新規登録できるとき' do
-      context 'nickname,email,password,password_confirmation,last_name,first_name,last_name_kana,first_name_kana,birth_dateが入力されていれば登録できる' do
-        it "nicknameが空だと登録できる" do
+    context 'ユーザー新規登録' do
+      context '新規登録できるとき' do
+        it "nickname,email,password,password_confirmation,last_name,first_name,last_name_kana,first_name_kana,birth_dateが正しく入力されていれば登録できる" do
           expect(@user).to be_valid
         end 
       end
@@ -57,18 +57,18 @@ require 'rails_helper'
         expect(@user.errors.full_messages).to include('Email is invalid')
       end
 
-
-      it 'passwordが空では登録できない' do
-        @user.password = ''
-        @user.valid?
-        expect(@user.errors.full_messages).to include("Password can't be blank")
-      end
-
       it '全角文字が含まれていると登録できない' do
         @user.password = 'ａ１２３４５'
         @user.password_confirmation = 'ａ１２３４５'
         @user.valid?
         expect(@user.errors.full_messages).to include('Password Include both letters and numbers')
+      end
+
+      it 'passwordが5文字以下では登録できない' do
+        @user.password = '00000'
+        @user.password_confirmation = '00000'
+        @user.valid?
+        expect(@user.errors.full_messages).to include('Password is too short (minimum is 6 characters)')
       end
 
       it 'passwordが129文字以上では登録できない' do
@@ -82,14 +82,14 @@ require 'rails_helper'
         @user.password = '111111'
         @user.password_confirmation = '111111'
         @user.valid?
-        expect(@user.errors.full_messages).to include("Include both letters and numbers")
+        expect(@user.errors.full_messages).to include("Password Include both letters and numbers")
       end
 
       it 'passwordに数字を含んでいなければ登録できない' do
         @user.password = 'aaaaaa'
         @user.password_confirmation = 'aaaaaa'
         @user.valid?
-        expect(@user.errors.full_messages).to include("Include both letters and numbers")
+        expect(@user.errors.full_messages).to include("Password Include both letters and numbers")
       end
 
       it "姓(全角)が空だと登録できない" do
