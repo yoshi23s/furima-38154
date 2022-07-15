@@ -28,7 +28,7 @@
 | status_id                  | integer   | null: false                    |
 | shipping_fee_status_id     | integer   | null: false                    |
 | prefecture_id              | integer   | null: false                    |
-| item_scheduled-delivery_id | integer   | null: false                    |
+| item_scheduled_delivery_id | integer   | null: false                    |
 | price                      | integer   | null: false                    |
 | user                       | reference | null: false, foreign_key: true |
 
