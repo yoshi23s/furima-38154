@@ -9,6 +9,7 @@ validates :city,          presence: true
 validates :address,       presence: true
 validates :phone_number,  presence: true
 
+
 def save
   # 寄付情報を保存し、変数orderに代入する
   order = Order.create(item_id: item_id, user_id: user_id)
