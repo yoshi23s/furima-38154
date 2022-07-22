@@ -17,15 +17,7 @@ class OrdersController < ApplicationController
     else
       render :index
     end
-    # @order = Order.create(order_params)
-    # @shipping = Shipping.create(shipping_params)
-    # if @shipping.save
-    # redirect_to root_path
-    # end
 
-    # @order = Order.new(order_params)
-    # @order.save
-    # create = new + save
   end
 
   
@@ -47,11 +39,3 @@ class OrdersController < ApplicationController
   def set_item
     @item = Item.find(params[:item_id])
   end
-  # def order_params
-    # params.permit(:item_id).merge(user_id: current_user.id)
-  # end
-
-  # def shipping_params
-    # params.permit(:postal_code, :prefecture_id, :city, :address, :building, :phone_number).merge(order_id: @order.id)
-  # end
-end
